@@ -15,7 +15,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerViewHolder> {
     private ArrayList<MyModel> models = new ArrayList<>();
     private CardClickListner myCardClickListener;
 
-
     public RecyclerAdapter(ArrayList<MyModel> models, CardClickListner cardClickListner) {
         this.models = models;
         this.myCardClickListener = cardClickListner;
