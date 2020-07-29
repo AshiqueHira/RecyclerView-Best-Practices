@@ -1,15 +1,21 @@
 package com.ashiquehira.recyclerviewbestpractice;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements CardClickListner{
+public class MainActivity extends AppCompatActivity implements CardClickListner, SearchView.OnQueryTextListener {
 
     RecyclerView myRecyclerView;
 
@@ -75,7 +81,7 @@ public class MainActivity extends AppCompatActivity implements CardClickListner{
 
         m = new MyModel();
         m.setMyTitle("Pineapple");
-        m.setMyDisc("This is a Pineapple");
+        m.setMyDisc("wonderful love");
         m.setMyImg(R.drawable.pinapple);
         models.add(m);
 
@@ -84,7 +90,6 @@ public class MainActivity extends AppCompatActivity implements CardClickListner{
         m.setMyDisc("This is Grape");
         m.setMyImg(R.drawable.grape);
         models.add(m);
-
 
     }
 
@@ -95,5 +100,49 @@ public class MainActivity extends AppCompatActivity implements CardClickListner{
         intent.putExtra("uid",gUid);
         startActivity(intent);
     }
-    // write some code here
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.main_menu, menu);
+        MenuItem menuItem = menu.findItem(R.id.search);
+        SearchView searchView = (SearchView) menuItem.getActionView();
+        searchView.setOnQueryTextListener(this);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.search) {
+
+
+
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+
+        String userInput = newText.toLowerCase();
+        List<MyModel> newList = new ArrayList<>();
+
+        for (MyModel name : models){
+            if (name.getMyTitle().toLowerCase().contains(userInput)){
+                newList.add(name);
+            }else if (name.getMyDisc().toLowerCase().contains(userInput)){
+                newList.add(name);
+            }
+        }
+        myRecyclerAdapter.updateList(newList);
+        return false;
+    }
 }
